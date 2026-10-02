@@ -1,0 +1,20 @@
+[project]
+name = "info-segugio"
+version = "0.1.0"
+description = "Chat che cerca sul web con Tavily e risponde in italiano citando le fonti"
+readme = "README.md"
+requires-python = ">=3.13,<3.14"
+dependencies = [
+    "chainlit (>=2.12,<3)",
+    "tavily-python (>=0.8,<1)",
+    "openai (>=3,<4)",
+    "python-dotenv (>=1.2,<2)",
+    "tiktoken (>=0.14,<1)",
+]
+
+[tool.poetry]
+package-mode = false
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

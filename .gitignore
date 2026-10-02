@@ -1,0 +1,14 @@
+# Ambiente virtuale e cache Python
+.venv/
+__pycache__/
+*.pyc
+
+# Segreti
+.env
+
+# File generati da Chainlit (le traduzioni vengono ricreate all'avvio)
+.chainlit/translations/
+.files/
+
+# Editor
+.vscode/
