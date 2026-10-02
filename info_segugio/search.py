@@ -9,9 +9,9 @@ from tavily.errors import (
     UsageLimitExceededError,
 )
 
-# Numero massimo di token di contesto da passare all'LLM
+# Numero massimo di token di contesto passati all'LLM per ogni giro di ricerca
 # (i modelli piccoli come llama3.2 lavorano meglio con contesti brevi)
-MAX_TOKEN_CONTESTO = 6000
+MAX_TOKEN_CONTESTO = 3000
 
 # Secondi massimi di attesa per una ricerca
 TIMEOUT_RICERCA = 30
@@ -25,7 +25,7 @@ def controlla_chiave(api_key: str) -> None:
     """Solleva un errore chiaro se la chiave Tavily non è stata impostata."""
     if not api_key:
         raise ErroreRicerca(
-            "🔑 Manca la chiave **TAVILY_API_KEY** nel file `.env`.\n\n"
+            "Manca la chiave **TAVILY_API_KEY** nel file `.env`.\n\n"
             "Puoi ottenerne una gratuita su https://app.tavily.com, poi apri una nuova chat."
         )
 
@@ -49,18 +49,18 @@ async def cerca(query: str, api_key: str, max_results: int = 5, search_depth: st
         )
     except (InvalidAPIKeyError, MissingAPIKeyError):
         raise ErroreRicerca(
-            "🔑 La chiave **TAVILY_API_KEY** non è valida. Controlla il file `.env` "
+            "La chiave **TAVILY_API_KEY** non è valida. Controlla il file `.env` "
             "(la trovi su https://app.tavily.com) e apri una nuova chat."
         )
     except UsageLimitExceededError:
-        raise ErroreRicerca("📉 Hai esaurito il credito mensile di Tavily. Riprova più tardi.")
+        raise ErroreRicerca("Hai esaurito il credito mensile di Tavily. Riprova più tardi.")
     except TavilyTimeoutError:
         raise ErroreRicerca(
-            f"⏱️ La ricerca ha impiegato più di {TIMEOUT_RICERCA} secondi. Riprova tra poco."
+            f"La ricerca ha impiegato più di {TIMEOUT_RICERCA} secondi. Riprova tra poco."
         )
     except Exception as e:
         # Qualsiasi altro problema (rete assente, servizio non disponibile, ...)
-        raise ErroreRicerca(f"🌐 Errore durante la ricerca su Tavily: {e}")
+        raise ErroreRicerca(f"Errore durante la ricerca su Tavily: {e}")
 
 
 # Tokenizer usato per stimare la lunghezza dei testi
@@ -75,6 +75,7 @@ def conta_token(testo: str) -> int:
 def costruisci_contesto(risultati: list[dict], max_token: int = MAX_TOKEN_CONTESTO) -> str:
     """Trasforma i risultati di Tavily in un testo numerato da passare all'LLM.
 
+    I risultati sono numerati da 1: l'LLM userà questi numeri nelle citazioni [n].
     Si aggiungono i risultati uno alla volta finché non si supera il limite di token.
     """
     blocchi = []

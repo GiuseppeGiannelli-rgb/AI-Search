@@ -20,6 +20,7 @@ class Config:
     base_url: str | None  # None = server ufficiale OpenAI
     tavily_max_results: int
     tavily_search_depth: str
+    giri_ricerca: int  # quanti giri di ricerca + riassunto fare per ogni domanda
 
 
 def scegli_provider() -> str:
@@ -56,4 +57,5 @@ def carica_config() -> Config:
         base_url=base_url,
         tavily_max_results=int(os.getenv("TAVILY_MAX_RESULTS", "").strip() or 5),
         tavily_search_depth=os.getenv("TAVILY_SEARCH_DEPTH", "").strip() or "advanced",
+        giri_ricerca=max(1, int(os.getenv("RICERCA_GIRI", "").strip() or 4)),
     )
