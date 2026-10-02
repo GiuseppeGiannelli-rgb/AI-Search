@@ -98,13 +98,3 @@ poetry run chainlit run info_segugio/__init__.py -w --port 8002
 ```
 
 e apri http://localhost:8002.
-
-## Esempi di domande
-
-- Che impatto ha avuto l'elezione di Trump 2024 su Bitcoin?
-- Quali sono le ultime novità sui modelli di intelligenza artificiale?
-- Come sta andando la missione Artemis della NASA?
-- Come funziona la fusione nucleare e a che punto è la ricerca?
-
-Puoi anche fare domande di approfondimento ("e in Europa?"): la query di ricerca tiene conto
-degli ultimi messaggi della conversazione.
