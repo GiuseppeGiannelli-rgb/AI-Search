@@ -90,8 +90,10 @@ async def _completa(client: AsyncOpenAI, modello: str, messaggi: list[dict], tem
 
 
 def _pulisci_query(query: str, riserva: str) -> str:
-    """Toglie virgolette e righe extra; se la query è strana usa la riserva."""
+    """Toglie virgolette, righe extra e trattini bassi; se la query è strana usa la riserva."""
     query = query.splitlines()[0].strip().strip('"').strip() if query else ""
+    # Alcuni modelli scrivono le parole unite da "_" (es. elezione_trump_2024): le separiamo
+    query = " ".join(query.replace("_", " ").split())
     return query if 0 < len(query) < 200 else riserva
 
 
